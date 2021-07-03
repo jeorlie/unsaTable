@@ -18,6 +18,7 @@ function unsaTable()
   var totalRow = 0;
   var pageBar;
   var navBar;
+  var messager;
   var showTitleOnTableData = false;
   var highlightSelectedRow = false;
 
@@ -35,12 +36,12 @@ function unsaTable()
       data: [],
       rowsPerPage: 25,
       navbarButtonPrev: {
-        label: 'PREV',
+        label: '<< PREV',
         css : 'w3-small w3-button w3-blue w3-hover-teal w3-round w3-padding-small',
         title: 'Go to previous page'
       },
       navbarButtonNext: {
-        label: 'NEXT',
+        label: 'NEXT >>',
         css : 'w3-small w3-button w3-blue w3-hover-teal w3-round w3-padding-small',
         title: 'Go to next page'
       },
@@ -74,6 +75,7 @@ function unsaTable()
     str += '<div class="w3-row">'; // row 
     str += '<div class="w3-col  s3 m6 l6 unsa-table-navbar"><div class="w3-bar w3-padding-small"></div></div>'; // col
     str += '<div class="w3-col  s9 m6 l6 unsa-table-pagebar"><div class="w3-bar w3-padding-small"></div></div>'; // col
+    str += '<div class="w3-col  s12 m12 l12 unsa-table-message"><div class="w3-bar w3-padding-small"></div></div>'; // col
     str += '</div>'; // end row
     //textEmptyTable
 
@@ -82,6 +84,7 @@ function unsaTable()
 
     navBar = parent.find('.unsa-table-navbar');
     pageBar = parent.find('.unsa-table-pagebar');
+    messager = parent.find('.unsa-table-message');
 
   }
   //--
@@ -179,14 +182,19 @@ function unsaTable()
       
 
     } else {
+
       selfie._tableClear();
+      pageBar.find('.w3-bar').empty();
+      navBar.find('.w3-bar').empty();
+      messager.html('<p style="padding:2px margin;2px;text-align:center;">No data to show...</p>');
     }
   }
   //--
   this._totalRow = function(){
-    var lblPageCount = '<label class="w3-right w3-bar-item">Record : <span class="w3-tag w3-pink">'+totalRow+ '</span></label>';
-    lblPageCount += '<label class="w3-right w3-bar-item">Page'+(totalPage > 1 ? 's': '')+':<span class="w3-tag">'+activePage+'</span>/'+totalPage+'</label>';    
+    var lblPageCount = '<label class="w3-right w3-bar-item">Total: <span class="w3-tag w3-pink w3-round">'+totalRow+ '</span></label>';
+    lblPageCount += '<label class="w3-right w3-bar-item">Page'+(totalPage > 1 ? 's': '')+':<span class="w3-tag">'+activePage+'</span> /'+totalPage+'</label>';    
     pageBar.find('.w3-bar').empty().append(lblPageCount);
+    messager.empty();
   }
   //--
   this._hideRows = function(showActive) {
@@ -199,7 +207,7 @@ function unsaTable()
   }
   //--
   this._hightLightSelectedRow = function(){
-    console.log('running...');
+
     parent.find('table tbody tr').on('click', function(){
       var obj = $(this);
       parent.find('table tbody tr').removeClass('w3-light-gray');
