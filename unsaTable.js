@@ -91,7 +91,12 @@ function unsaTable()
 
   this.parse = function(data){
 
+    totalPage = 0;
+    activePage = 1;
+    totalRow = 0;
+
     if(data.length > 0){
+      messager.html('<p>Loading... please wait</p>');
       var str = '';
       var loopcount = 0;
       var rowCount = 1;
@@ -102,6 +107,7 @@ function unsaTable()
       var btn = '';
       var btnObj;
       var thtd = '';
+
 
       navBar.find('.w3-bar').empty();
       pageBar.find('.w3-bar').empty();
@@ -157,26 +163,31 @@ function unsaTable()
       activePage = 1;
       selfie._tableClear();
       parent.find('tbody').append(str);
-      var btnPrev = '<button class="w3-bar-item nav-btn-prev '+config['navbarButtonPrev']['css']+'">'+config['navbarButtonPrev']['label']+'</button>';
-      var btnNext = '<button style="margin-left:2px" class="nav-btn-next w3-bar-item '+config['navbarButtonNext']['css']+'">'+config['navbarButtonNext']['label']+'</button>';
-      navBar.find('.w3-bar').empty().append(btnPrev+ ' ' + btnNext);      
+      messager.empty();
+      if(totalPage > 1){
+        var btnPrev = '<button class="w3-bar-item nav-btn-prev '+config['navbarButtonPrev']['css']+'">'+config['navbarButtonPrev']['label']+'</button>';
+        var btnNext = '<button style="margin-left:2px" class="nav-btn-next w3-bar-item '+config['navbarButtonNext']['css']+'">'+config['navbarButtonNext']['label']+'</button>';
+        navBar.find('.w3-bar').empty().append(btnPrev+ ' ' + btnNext);      
+
+        
+
+        navBar.find('.nav-btn-next').on('click', function(){
+          if(activePage >= rowCount) return false;
+          activePage++;
+          selfie._hideRows(activePage);
+          selfie._totalRow();
+        });
+
+        navBar.find('.nav-btn-prev').on('click', function(){
+          if(activePage <= 1) return false;
+          activePage--;
+          selfie._hideRows(activePage);
+          selfie._totalRow();
+        });
+      }
 
       selfie._hideRows(1);
       selfie._totalRow();
-
-      navBar.find('.nav-btn-next').on('click', function(){
-        if(activePage >= rowCount) return false;
-        activePage++;
-        selfie._hideRows(activePage);
-        selfie._totalRow();
-      });
-
-      navBar.find('.nav-btn-prev').on('click', function(){
-        if(activePage <= 1) return false;
-        activePage--;
-        selfie._hideRows(activePage);
-        selfie._totalRow();
-      });
 
       if(highlightSelectedRow == true) selfie._hightLightSelectedRow();      
       
