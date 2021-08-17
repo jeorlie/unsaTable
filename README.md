@@ -22,7 +22,7 @@ w3.css found at https://www.w3schools.com/w3css/
     </script>
     
     
-the data to be supplied in table.parse() is an array or json object;
+the data to be supplied in table.parse(data) is an array or json object;
 
 try running this php script:
 
@@ -41,7 +41,9 @@ try running this php script:
       );
     }
 
-    $tableData = json_encode($obj);
-
+ 
     ?>
+    <script>
+        table.parse(<?php echo json_encode($obj);?>);
+    </script>
 
